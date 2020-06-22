@@ -1,0 +1,18 @@
+# Builds docker image for client and push to GCR.
+# Run using (note that PROJECT_ID environment variable needs to be set):
+# $ PROJECT_ID=...
+# $ gcloud builds submit --config cloudbuild.yaml --timeout 1h .
+
+substitutions:
+  _CUSTOM_TAG_NAME: 'latest'
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--tag=gcr.io/${PROJECT_ID}/jpa-healthcare-client:${_CUSTOM_TAG_NAME}'
+      - '--file=Dockerfile'
+      - '.'
+
+images:
+  - 'gcr.io/${PROJECT_ID}/jpa-healthcare-client:${_CUSTOM_TAG_NAME}'

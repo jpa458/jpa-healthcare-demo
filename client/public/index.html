@@ -1,0 +1,86 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <title>Google Healthcare Demo</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/starter-template/">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="public/css/app.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">Google Healthcare Demo</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#" onclick="toggleInfo();">Toggle Info<span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <main role="main" class="container">
+       <div id="infoCard" class="card card-body collapse">
+         <image src="public/images/workflow.png">
+         <h2>Context</h2>
+         <p>This demo web application acts as a client in a simulated clinical workflow for online radiology diagnostics. The data is based on the TCIA CBIS-DDSM dataset which contains ~2500 mammography images in DICOM format. Each image is given a BI-RADS breast density score from 1 to 4.  A ML model has been trained and deployed for this purpose</p>
+         <p>See the following codelab on which this demo client is based for more info <a href="https://github.com/GoogleCloudPlatform/healthcare/tree/master/imaging/ml/ml_codelab" target="_blank">https://github.com/GoogleCloudPlatform/healthcare/tree/master/imaging/ml/ml_codelab</a></p>
+         <h2>Clinical Workflow Explained</h2>
+         <p>This demo app acts as the client PACS system in the workflow depicted above. This just one example of a workflow design. The steps are as follows:</p>
+         <ol>
+           <li>PACS uploads the DICOM image to the DICOM store. In this case we download a file from a public dataset available on a Google Cloud storage bucket.</li>
+           <li>The DICOM store emits a Pub/Sub notification.</li>
+           <li>The Inference Module is listening for such events and retrieves the DICOM file.</li>
+           <li>It then submits a prediction request against our online model.</li>
+           <li>The response is then sent back to the Inference Module (synchronously).</li>
+           <li>A DICOM Structured Report is created and inserted into the DICOM store.</li>
+           <li>A Pub/Sub notification is then issued, picked up by our demo client and the results displayed.</li>
+         </ol>
+         <h2>Usage</h2>
+         <p>Click on the "Process" button and watch the magic happen. Click on the "Cleanup After" button when done.</p>
+         <p>If you want to use a different DICOM image, you can browse the public data set available here : gs://gcs-public-data--healthcare-tcia-cbis-ddsm/dicom/.  Go to <a href="https://cloud.google.com/healthcare/docs/resources/public-datasets/tcia#cloud-healthcare-api" target="_blank">https://cloud.google.com/healthcare/docs/resources/public-datasets/tcia#cloud-healthcare-api</a> to request permissions to access tcia dataset and access the GCP Project. </p>
+         <h2>How To Build Yourself</h2>
+         <p>TODO</p>
+       </div>
+       <div id="demoCard" class="card card-body">
+        <div class="starter-template">
+          <div>
+            <form class="form">
+              <label for="gcsUri">Dicom file GCS URI from gcs-public-data--healthcare-tcia-cbis-ddsm bucket</label>
+              <input id="gcsUri" class="form-control" type="text" placeholder="DCM GS object URI" value="gs://gcs-public-data--healthcare-tcia-cbis-ddsm/dicom/1.3.6.1.4.1.9590.100.1.2.85935434310203356712688695661986996009/1.3.6.1.4.1.9590.100.1.2.374115997511889073021386151921807063992/1.3.6.1.4.1.9590.100.1.2.289923739312470966435676008311959891294.dcm">
+              </br>
+              <button type="button" id="process_button" class="btn btn-primary my-2 my-sm-0" onclick="process();" >Process</button>
+              <button type="button" id="delete_button" class="btn btn-secondary my-2 my-sm-0" onclick="cleanup();" >Cleanup after!</button>
+              </form>
+          </div>
+        </div>
+        </br>
+        <div id="results" style="display: none;">
+              <p>Server-side processing log...</p>
+              <ul id="chat"></ul>
+        </div>
+
+        <div id="studyResultsContainer" style="display: none;">
+          <p>Image</p>
+          <img id="image" src="" style="height:300px;">
+          </br>
+          <p>DICOM fields</p>
+          <div id="studyResults"></div>
+        </div>
+      </div>
+    </main>
+  </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="public/js/app.js"></script>
+<script src="public/js/dicomParser.min.js"></script>
+</html>

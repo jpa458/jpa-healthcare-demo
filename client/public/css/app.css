@@ -1,0 +1,20 @@
+
+.left-half {
+  float:left;
+
+  #width: 50%;
+}
+
+.right-half {
+
+  float: left;
+  #width: 50%;
+}
+
+.starter-template {
+  margin-top: 56px;
+}
+
+.body {
+
+}

@@ -1,0 +1,24 @@
+{
+  "name": "jpa-healthcare-demo-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "license": "",
+  "dependencies": {
+    "body-parser": "^1.0.0",
+    "express": "~4.11.x",
+    "ws": "^7.0.1",
+    "tmp": "^0.2.1",
+    "@google-cloud/storage": "^4.7.0",
+    "@google-cloud/pubsub": "^1.7.2",
+    "googleapis": "49.0.0"
+  },
+
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=4.3"
+  },
+
+}
